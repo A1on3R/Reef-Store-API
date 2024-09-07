@@ -38,6 +38,15 @@ gem "bootsnap", require: false
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mswin mswin64 mingw x64_mingw ]
+  gem 'rspec-rails'
+  gem 'database_cleaner'
+  gem 'factory_bot_rails', '~> 6.1'
+  gem 'faker'
+  gem 'shoulda-matchers', '~> 4.5', '>= 4.5.1'
+  gem "pg", "~> 1.1"
+  gem "jbuilder"
+  gem "rails-controller-testing"
+  gem "pry"
 end
 
 group :development do
