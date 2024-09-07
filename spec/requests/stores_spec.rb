@@ -4,7 +4,7 @@ require 'rails_helper'
 RSpec.describe "Stores", type: :request do
 
 
-# let!(:stores) { create_list(:store,2) }
+let!(:store_id) { @stores.first.id }
 before(:all) do
   @stores = create_list(:store,2)
   get '/stores'
@@ -42,10 +42,19 @@ end
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
       end
-    #   it 'returns a validation failure message' do
-    #     expect(response.body)
-    #    .to include("is too short (minimum is 2 characters)")
-    #   end
+      it 'returns a validation failure message' do
+        expect(response.body)
+       .to include("is too short")
+      end
+    end
+  end
+
+
+  # Test suite for DELETE /category/:id
+ describe 'DELETE /stores/:id' do
+    before { delete "/stores/#{store_id}" }
+    it 'returns status code 204' do
+      expect(response).to have_http_status(204)
     end
   end
 end
