@@ -38,6 +38,13 @@ class StoresController < ApplicationController
     @store.destroy!
   end
 
+  def item_count
+    @store = Store.find(params[:id])
+    render json: {
+      store: @store, item_count: @store.items.count
+    }
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_store
