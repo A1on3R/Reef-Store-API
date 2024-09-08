@@ -1,9 +1,10 @@
 class StoresController < ApplicationController
   before_action :set_store, only: %i[ show update destroy ]
-
+  STORES_PER_PAGE = 2
   # GET /stores
   def index
-    @stores = Store.all
+    @page = params.fetch(:page, 0).to_i
+    @stores = Store.offset(@page * STORES_PER_PAGE).limit(STORES_PER_PAGE)
 
     render json: @stores
   end

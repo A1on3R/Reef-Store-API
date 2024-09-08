@@ -1,10 +1,13 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: %i[ show update destroy ]
+  ITEMS_PER_PAGE = 5
 
   # GET /items
   # GET /items.json
   def index
-    @items = Item.all
+    # @items = Item.all
+    @page = params.fetch(:page, 0).to_i
+    @items = Item.offset(@page * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE)
   end
 
   # GET /items/1
