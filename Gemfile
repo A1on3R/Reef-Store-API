@@ -46,7 +46,7 @@ group :development, :test do
   gem "pg", "~> 1.1"
   gem "jbuilder"
   gem "rails-controller-testing"
-  gem "pry"
+  gem "pry-byebug"
 end
 
 group :development do

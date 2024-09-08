@@ -18,6 +18,7 @@ class StoresController < ApplicationController
     @store = Store.new(store_params)
 
     if @store.save
+      NewStoreNotificationJob.perform_later(@store.id)
       render json: @store, status: :created, location: @store
     else
       render json: @store.errors, status: :unprocessable_entity

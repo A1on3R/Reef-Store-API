@@ -28,13 +28,24 @@ end
   describe 'POST /stores' do
     # valid payload
     let(:valid_name) { { name: 'XYZ' } }
+    before do
+      # Clear any previously enqueued jobs
+      clear_enqueued_jobs
+      clear_performed_jobs
+  
+      # Make the POST request
+      post '/stores', params: { store: valid_name }
+    end
     context 'when the request is valid' do
-      before { post '/stores', params:{'store': valid_name } }
+      # before { post '/stores', params:{'store': valid_name } }
       it 'creates a store' do
         expect(json['name']).to eq('XYZ')
       end
       it 'returns status code 201' do
         expect(response).to have_http_status(201)
+      end
+      it 'enqueues NewStoreNotificationJob' do
+        expect(ActiveJob::Base.queue_adapter.enqueued_jobs.size).to eq 1
       end
     end
     context 'when the request is invalid' do
