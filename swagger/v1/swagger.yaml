@@ -16,6 +16,12 @@ paths:
         required: false
         schema:
           type: integer
+      - name: starts_with
+        in: query
+        description: Search Query to search by name
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: stores found
@@ -51,6 +57,38 @@ paths:
               required:
               - name
   "/stores/{id}":
+    put:
+      summary: Updates a store
+      tags:
+      - Stores
+      parameters:
+      - name: id
+        in: path
+        description: ID of the store to update
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: store updated
+        '404':
+          description: store not found
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the store
+                description:
+                  type: string
+                  description: Description of the store
+              required:
+              - name
     delete:
       summary: Deletes a store
       tags:
