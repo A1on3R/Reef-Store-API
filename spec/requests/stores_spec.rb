@@ -116,7 +116,6 @@ RSpec.describe 'Stores API', type: :request do
 
       response '201', 'store created' do
         let(:store) { { name: 'XYZ' } }
-        binding.pry
 
         run_test! do
 

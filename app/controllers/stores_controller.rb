@@ -3,11 +3,19 @@ class StoresController < ApplicationController
   STORES_PER_PAGE = 2
   # GET /stores
   def index
+    # Start by getting all the stores
+    @stores = Store.all
+  
+    # Apply filtering if the filter parameter is present
+    @stores = @stores.filter_by_starts_with(params[:starts_with]) if params[:starts_with].present? 
+  
+    # Now apply pagination to the filtered results
     @page = params.fetch(:page, 0).to_i
-    @stores = Store.offset(@page * STORES_PER_PAGE).limit(STORES_PER_PAGE)
-
+    @stores = @stores.offset(@page * STORES_PER_PAGE).limit(STORES_PER_PAGE)
+    
     render json: @stores
   end
+  
 
   # GET /stores/1
   def show

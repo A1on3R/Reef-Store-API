@@ -5,9 +5,18 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    # @items = Item.all
+    # Start by getting all the items
+    @items = Item.all
+    @items = Item.filter_by_store_id(params[:store_id]) if params[:store_id].present?
+  
+    # Apply filtering if the filter parameter is present
+    @items = @items.filter_by_starts_with(params[:starts_with]) if params[:starts_with].present? 
+  
+    # Now apply pagination to the filtered results
     @page = params.fetch(:page, 0).to_i
-    @items = Item.offset(@page * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE)
+    @items = @items.offset(@page * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE)
+    
+    render json: @items
   end
 
   # GET /items/1
