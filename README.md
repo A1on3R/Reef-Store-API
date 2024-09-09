@@ -2,6 +2,14 @@
 
 This API allows you to manage stores, items, and ingredients, providing full CRUD (Create, Read, Update, Delete) functionality.
 
+## Overview of Solution
+ We were able to include implementations of
+ - Rails API that manages stores, items, and ingredients
+ - All CRUD functionality for the 3 basic models
+ - Pagination and filtering
+ - Rspec tests that work with Swagger to generate documentation
+ - Set up for background job to be created upon creating a store
+
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
@@ -55,17 +63,18 @@ you can pass the query parameter `?&starts_with=mysearch` to search by name (Cas
 - **DELETE** `/stores/:id` – Delete a store
 
 ### Items
-you can pass the query parameter `?&starts_with=mysearch` to search by name (Case sensitive)
-you can also filter by store by using `&store_id=` to find items by a certain store
-- **GET** `/stores/:store_id/items` – List all items in a store
-- **GET** `/stores/:store_id/items/:id` – Get a specific item
-- **POST** `/stores/:store_id/items` – Create a new item
-- **PUT** `/stores/:store_id/items/:id` – Update an item
-- **DELETE** `/stores/:store_id/items/:id` – Delete an item
+You can pass the query parameter `?&starts_with=mysearch` to search by name (Case sensitive)
+
+You can also filter by store by using `&store_id=` to find items by a certain store
+- **GET** `/items` – List all items
+- **GET** `/items/:id` – Get a specific item
+- **POST** `/items` – Create a new item (Existing store ID required)
+- **PUT** `items/:id` – Update an item
+- **DELETE** `/items/:id` – Delete an item
 
 ### Ingredients
-- **GET** `/items/:item_id/ingredients` – List all ingredients of an item
-- **GET** `/items/:item_id/ingredients/:id` – Get a specific ingredient
-- **POST** `/items/:item_id/ingredients` – Create a new ingredient
-- **PUT** `/items/:item_id/ingredients/:id` – Update an ingredient
-- **DELETE** `/items/:item_id/ingredients/:id` – Delete an ingredient
+- **GET** `/ingredients` – List all ingredients
+- **GET** `/ingredients/:id` – Get a specific ingredient
+- **POST** `/ingredients` – Create a new ingredient (Existing item required)
+- **PUT** `/ingredients/:id` – Update an ingredient
+- **DELETE** `/ingredients/:id` – Delete an ingredient
