@@ -47,6 +47,7 @@ group :development, :test do
   gem "jbuilder"
   gem "rails-controller-testing"
   gem "pry-byebug"
+  gem "rswag"
 end
 
 group :development do

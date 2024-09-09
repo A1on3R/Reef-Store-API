@@ -1,0 +1,55 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/stores":
+    get:
+      summary: Retrieves all stores
+      tags:
+      - Stores
+      responses:
+        '200':
+          description: stores found
+    post:
+      summary: Creates a store
+      tags:
+      - Stores
+      parameters: []
+      responses:
+        '201':
+          description: store created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              required:
+              - name
+  "/stores/{id}":
+    delete:
+      summary: Deletes a store
+      tags:
+      - Stores
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: store deleted
+        '404':
+          description: store not found
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
