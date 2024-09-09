@@ -79,11 +79,17 @@ RSpec.describe 'Stores API', type: :request do
     get 'Retrieves all stores' do
       tags 'Stores'
       produces 'application/json'
+      parameter name: :page, in: :query, type: :integer, description: 'Page number for pagination', required: false
+
       
       response '200', 'stores found' do
-        before(:all) do
-          @stores = create_list(:store, 2)
-        end
+        schema type: :array, items: {
+        type: :object,
+        properties: {
+          id: { type: :integer },
+          name: { type: :string }
+        }
+      }
 
         run_test! do
           expect(json).not_to be_empty
