@@ -79,7 +79,7 @@ RSpec.describe 'Stores API', type: :request do
     get 'Retrieves all stores' do
       tags 'Stores'
       produces 'application/json'
-      parameter name: :page, in: :query, type: :integer, description: 'Page number for pagination', required: false
+      # parameter name: :page, in: :query, type: :integer, description: 'Page number for pagination', required: false
 
       
       response '200', 'stores found' do
@@ -90,6 +90,10 @@ RSpec.describe 'Stores API', type: :request do
           name: { type: :string }
         }
       }
+      before do
+        # Create stores before the request
+        create_list(:store, 2)
+      end
 
         run_test! do
           expect(json).not_to be_empty
@@ -112,8 +116,10 @@ RSpec.describe 'Stores API', type: :request do
 
       response '201', 'store created' do
         let(:store) { { name: 'XYZ' } }
+        binding.pry
 
         run_test! do
+
           expect(json['name']).to eq('XYZ')
         end
       end

@@ -1,31 +1,31 @@
 require 'swagger_helper'
 
 RSpec.describe 'api/stores/controller', type: :request do
-    path '/store' do
+    # path '/stores' do
 
-        post 'Creates a store' do
-          tags 'Stores'
-          consumes 'application/json'
-          parameter name: :store, in: :body, schema: {
-            type: :object,
-            properties: {
-              name: { type: :string },
-              description: { type: :string }
-            },
-            required: [ 'name' ]
-          }
+    #     post 'Creates a store' do
+    #       tags 'Stores'
+    #       consumes 'application/json'
+    #       parameter name: :store, in: :body, schema: {
+    #         type: :object,
+    #         properties: {
+    #           name: { type: :string },
+    #           description: { type: :string }
+    #         },
+    #         required: [ 'name' ]
+    #       }
     
-          response '201', 'store created' do
-            let(:store) { { name: 'foo', description: 'bar' } }
-            run_test!
-          end
+    #       response '201', 'store created' do
+    #         let(:store) { { store: { name: 'foo', description: 'bar' } } }
+    #         run_test!
+    #       end
     
-          response '422', 'invalid request' do
-            let(:store) { { name: '' } }
-            run_test!
-          end
-        end
-      end
+    #       response '422', 'invalid request' do
+    #         let(:store) { { name: '' } }
+    #         run_test!
+    #       end
+    #     end
+    #   end
     
     #   path '/blogs/{id}' do
     
