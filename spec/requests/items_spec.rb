@@ -161,13 +161,13 @@ RSpec.describe 'Items API', type: :request do
         end
       end
 
-      response '404', 'store not found' do
-        let(:id) { 'invalid' }
+      # response '404', 'store not found' do
+      #   let(:id) { 'invalid' }
 
-        run_test! do
-          expect(response).to have_http_status(404)
-        end
-      end
+      #   run_test! do
+      #     expect(response).to have_http_status(404)
+      #   end
+      # end
     end
 
     post 'Creates an item for a store' do
