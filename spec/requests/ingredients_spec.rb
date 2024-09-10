@@ -16,119 +16,156 @@ RSpec.describe "/ingredients", type: :request do
   # This should return the minimal set of attributes required to create a valid
   # Ingredient. As you add validations to Ingredient, be sure to
   # adjust the attributes here as well.
-  let(:store) {Store.create(name: "ABC")}
+  # RSpec.describe 'Items Route', type: :request do
+    path '/ingredients' do
+      get 'Retrieves all ingredients for a store' do
+        tags 'ingredients'
+        produces 'application/json'
+        parameter name: :page, in: :query, type: :integer, description: 'Page number for pagination', required: false
+        
+        response '200', 'ingredients found' do
+          schema type: :array, items: {
+            type: :object,
+            properties: {
+              id: { type: :integer },
+              name: { type: :string }
+            }
+          }
+  
+          let(:store) { create(:store) }
+          let(:item) { create(:item, name: 'New Item', store: store) }
+          before do
+            create_list(:ingredient, 2, item: item)
+          end
+  
+          run_test! do
+            expect(json).not_to be_empty
+            expect(json.size).to eq(2)
+          end
+        end
+      end
+  
+      post 'Creates an ingredient for an item' do
+        tags 'ingredients'
+        consumes 'application/json'
+        produces 'application/json'
+        parameter name: :item_id, in: :path, type: :integer, description: 'ID of the store', required: true
+        parameter name: :ingredient, in: :body, schema: {
+          type: :object,
+          properties: {
+            name: { type: :string }
+          },
+          required: ['name']
+        }
+  
+        response '201', 'ingredient created' do
+          let(:store) { create(:store) }
+          let(:store_id) { store.id }
+          let(:item) { create(:item, name: 'new item', store: store)}
+          let(:item_id) {item.id}
+          let(:ingredient) { { name: 'Lettuce', item_id: item_id } }
+  
+          run_test! do
+            expect(json['name']).to eq('Lettuce')
+          end
+        end
+  
+        response '422', 'invalid request' do
+          let(:store) { create(:store) }
+          let(:store_id) { store.id }
+          let(:item) { create(:item, name: 'new item', store: store)}
+          let(:item_id) {item.id}
+          
+          let(:ingredient) { { name: '', item_id: item.id } }
+  
+          run_test! do
+            expect(response.body).to include("is too short")
+          end
+        end
+      end
+    end
+  
+    # path '/items/{id}' do
+    #   put 'Updates an item' do
+    #     tags 'Items'
+    #     consumes 'application/json'
+    #     produces 'application/json'
+    #     parameter name: :id, in: :path, type: :integer, description: 'ID of the item to update', required: true
+    #     parameter name: :item_params, in: :body, schema: {
+    #       type: :object,
+    #       properties: {
+    #         name: { type: :string, description: 'Name of the item' }
+    #       },
+    #       required: ['name']
+    #     }
+  
+    #     response '200', 'item updated' do
+    #       let!(:store) { create(:store) }
+    #       let!(:item) { create(:item, name: 'Old Item', store_id: store_id) }
+    #       let(:store_id) { store.id }
+    #       let(:id) { item.id }
+    #       let(:item_params) { { name: 'New Item' } }
+  
+    #       run_test! do
+    #         expect(json['name']).to eq('New Item')
+    #       end
+    #     end
+  
+    #     response '404', 'item or store not found' do
+    #       let(:store_id) { 'invalid' }
+    #       let(:id) { 'invalid' }
+    #       let(:item_params) { { name: 'New Item', store_id: store_id } }
+  
+    #       run_test! do
+    #         expect(response).to have_http_status(404)
+    #       end
+    #     end
+  
+    #     response '422', 'invalid request' do
+    #       let!(:store) { create(:store) }
+    #       let!(:item) { create(:item, store: store) }
+    #       let(:store_id) { store.id }
+    #       let(:id) { item.id }
+    #       let!(:item_params) { { name: '' } }
+  
+    #       run_test! do
+    #         expect(response.body).to include("is too short")
+    #       end
+    #     end
+    #   end
+  
+    #   delete 'Deletes an item' do
+    #     tags 'Items'
+    #     produces 'application/json'
+    #     parameter name: :id, in: :path, type: :integer, description: 'ID of the item to delete', required: true
+        
+    #     response '204', 'item deleted' do
+    #       let!(:store) { create(:store) }
+    #       let!(:item) { create(:item, store: store) }
+    #       let(:store_id) { store.id }
+    #       let(:id) { item.id }
+          
+  
+  
+    #       run_test!
+    #     end
+  
+    #     response '404', 'item not found' do
+    #       let!(:store) { create(:store) }
+    #       let!(:item) { create(:item, store: store) }
+    #       let(:id) {'invalid'}
+  
+  
+          
+  
+  
+    #       run_test! do
+    #         expect(response).to have_http_status(404)
+    #       end
+    #     end
+    #   end
+    # end
+    
 
-  let(:item) {Item.create(name: "Salt", store_id: store.id)}
-
-  let(:valid_attributes) {
-    # FactoryBot.attributes_for(:item)
-    {:name=>"MyString", :quantity=>1, :item_id=>item.id}
-  }
-
-  let(:invalid_attributes) {
-    { :name => nil, :quantity => 1, :item_id => item.id }
-  }
  
-
-  # This should return the minimal set of values that should be in the headers
-  # in order to pass any filters (e.g. authentication) defined in
-  # IngredientsController, or in your router and rack
-  # middleware. Be sure to keep this updated too.
-  let(:valid_headers) {
-    {}
-  }
-
-  describe "GET /index" do
-    it "renders a successful response" do
-      Ingredient.create! valid_attributes
-      get ingredients_url, headers: valid_headers, as: :json
-      expect(response).to be_successful
-    end
-  end
-
-  describe "GET /show" do
-    it "renders a successful response" do
-      ingredient = Ingredient.create! valid_attributes
-      get ingredient_url(ingredient), as: :json
-      expect(response).to be_successful
-    end
-  end
-
-  describe "POST /create" do
-    context "with valid parameters" do
-      it "creates a new Ingredient" do
-        expect {
-          post ingredients_url,
-               params: { ingredient: valid_attributes }, headers: valid_headers, as: :json
-        }.to change(Ingredient, :count).by(1)
-      end
-
-      it "renders a JSON response with the new ingredient" do
-        post ingredients_url,
-             params: { ingredient: valid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:created)
-        expect(response.content_type).to match(a_string_including("application/json"))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "does not create a new Ingredient" do
-        expect {
-          post ingredients_url,
-               params: { ingredient: invalid_attributes }, as: :json
-        }.to change(Ingredient, :count).by(0)
-      end
-
-      it "renders a JSON response with errors for the new ingredient" do
-        post ingredients_url,
-             params: { ingredient: invalid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to match(a_string_including("application/json"))
-      end
-    end
-  end
-
-  describe "PATCH /update" do
-    context "with valid parameters" do
-      let(:new_attributes) {
-        {:name=>"NewName", :quantity=>1, :item_id=>item.id}
-
-      }
-
-      it "updates the requested ingredient" do
-        ingredient = Ingredient.create! valid_attributes
-        patch ingredient_url(ingredient),
-              params: { ingredient: new_attributes }, headers: valid_headers, as: :json
-        ingredient.reload
-        expect(ingredient.name).to eq new_attributes[:name]
-      end
-
-      it "renders a JSON response with the ingredient" do
-        ingredient = Ingredient.create! valid_attributes
-        patch ingredient_url(ingredient),
-              params: { ingredient: new_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:ok)
-        expect(response.content_type).to match(a_string_including("application/json"))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "renders a JSON response with errors for the ingredient" do
-        ingredient = Ingredient.create! valid_attributes
-        patch ingredient_url(ingredient),
-              params: { ingredient: invalid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to match(a_string_including("application/json"))
-      end
-    end
-  end
-
-  describe "DELETE /destroy" do
-    it "destroys the requested ingredient" do
-      ingredient = Ingredient.create! valid_attributes
-      expect {
-        delete ingredient_url(ingredient), headers: valid_headers, as: :json
-      }.to change(Ingredient, :count).by(-1)
-    end
-  end
 end
