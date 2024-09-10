@@ -16,7 +16,6 @@ RSpec.describe "/ingredients", type: :request do
   # This should return the minimal set of attributes required to create a valid
   # Ingredient. As you add validations to Ingredient, be sure to
   # adjust the attributes here as well.
-  # RSpec.describe 'Items Route', type: :request do
     path '/ingredients' do
       get 'Retrieves all ingredients for a store' do
         tags 'Ingredients'
@@ -113,15 +112,6 @@ RSpec.describe "/ingredients", type: :request do
           end
         end
   
-        # response '404', 'item or store not found' do
-        #   let(:store_id) { 'invalid' }
-        #   let(:id) { 'invalid' }
-        #   let(:item_params) { { name: 'New Item', store_id: store_id } }
-  
-        #   run_test! do
-        #     expect(response).to have_http_status(404)
-        #   end
-        # end
   
         response '422', 'invalid request' do
           let!(:store) { create(:store) }
