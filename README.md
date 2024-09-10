@@ -20,7 +20,7 @@ This API allows you to manage stores, items, and ingredients, providing full CRU
   - [Items](#items)
   - [Ingredients](#ingredients)
 
-## Installation
+## Installation (Using Linux with WSL)
 1. Clone the repository:
    ```bash
    git clone https://github.com/A1on3R/Reef-Store-API.git
@@ -28,12 +28,16 @@ This API allows you to manage stores, items, and ingredients, providing full CRU
 2. Install dependencies:
    ```bash
    bundle install
+
+3. You should run the spec to make sure the api is functioning
+   ```bash
+   bundle exec rspec
    
-3. Setup the database(Or you can skip this and just start creating stores):
+4. Setup the database(Or you can skip this and just start creating stores):
    ```bash
    rails db:create db:migrate db:seed
    
-4. Start the server:
+5. Start the server:
    ```bash
    rails server
    
