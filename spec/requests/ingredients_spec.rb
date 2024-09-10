@@ -46,7 +46,7 @@ RSpec.describe "/ingredients", type: :request do
       end
   
       post 'Creates an ingredient for an item' do
-        tags 'ingredients'
+        tags 'Ingredients'
         consumes 'application/json'
         produces 'application/json'
         parameter name: :item_id, in: :path, type: :integer, description: 'ID of the store', required: true
