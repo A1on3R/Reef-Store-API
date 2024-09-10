@@ -5,5 +5,5 @@
 # Example:
 #
   ["Store1", "ABC STORE", "STORE3", "XYZ STORE"].each do |store_name|
-    Store.find_or_create_by!(name: genre_name)
+    Store.find_or_create_by!(name: store_name)
   end
