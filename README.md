@@ -9,6 +9,7 @@ This API allows you to manage stores, items, and ingredients, providing full CRU
  - Pagination and filtering
  - Rspec tests that work with Swagger to generate documentation
  - Set up for background job to be created upon creating a store
+ - Route for number of items in a store
 
 ## Table of Contents
 - [Installation](#installation)
