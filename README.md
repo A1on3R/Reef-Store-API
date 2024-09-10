@@ -28,7 +28,7 @@ This API allows you to manage stores, items, and ingredients, providing full CRU
    ```bash
    bundle install
    
-3. Setup the database:
+3. Setup the database(Or you can skip this and just start creating stores):
    ```bash
    rails db:create db:migrate db:seed
    
