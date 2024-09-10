@@ -56,6 +56,50 @@ paths:
                   type: string
               required:
               - name
+  "/ingredients/{id}":
+    put:
+      summary: Updates an ingredient
+      tags:
+      - Ingredients
+      parameters:
+      - name: id
+        in: path
+        description: ID of the item to update
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: ingredient updated
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the ingredient
+              required:
+              - name
+    delete:
+      summary: Deletes an ingredient
+      tags:
+      - Ingredients
+      parameters:
+      - name: id
+        in: path
+        description: ID of the item to delete
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: ingredient deleted
+        '404':
+          description: ingredient not found
   "/items":
     get:
       summary: Retrieves all items for a store

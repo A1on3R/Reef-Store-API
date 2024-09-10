@@ -85,86 +85,94 @@ RSpec.describe "/ingredients", type: :request do
       end
     end
   
-    # path '/items/{id}' do
-    #   put 'Updates an item' do
-    #     tags 'Items'
-    #     consumes 'application/json'
-    #     produces 'application/json'
-    #     parameter name: :id, in: :path, type: :integer, description: 'ID of the item to update', required: true
-    #     parameter name: :item_params, in: :body, schema: {
-    #       type: :object,
-    #       properties: {
-    #         name: { type: :string, description: 'Name of the item' }
-    #       },
-    #       required: ['name']
-    #     }
+    path '/ingredients/{id}' do
+      put 'Updates an ingredient' do
+        tags 'Ingredients'
+        consumes 'application/json'
+        produces 'application/json'
+        parameter name: :id, in: :path, type: :integer, description: 'ID of the item to update', required: true
+        parameter name: :ingredient_params, in: :body, schema: {
+          type: :object,
+          properties: {
+            name: { type: :string, description: 'Name of the ingredient' }
+          },
+          required: ['name']
+        }
   
-    #     response '200', 'item updated' do
-    #       let!(:store) { create(:store) }
-    #       let!(:item) { create(:item, name: 'Old Item', store_id: store_id) }
-    #       let(:store_id) { store.id }
-    #       let(:id) { item.id }
-    #       let(:item_params) { { name: 'New Item' } }
+        response '200', 'ingredient updated' do
+          let!(:store) { create(:store) }
+          let!(:item) { create(:item, name: 'Item1', store: store) }
+
+          let!(:ingredient) { create(:ingredient, name: 'Old Ingredient', item_id: item_id) }
+          let(:item_id) { item.id }
+          let(:id) { ingredient.id }
+          let(:ingredient_params) { { name: 'New Ingredient' } }
   
-    #       run_test! do
-    #         expect(json['name']).to eq('New Item')
-    #       end
-    #     end
+          run_test! do
+            expect(json['name']).to eq('New Ingredient')
+          end
+        end
   
-    #     response '404', 'item or store not found' do
-    #       let(:store_id) { 'invalid' }
-    #       let(:id) { 'invalid' }
-    #       let(:item_params) { { name: 'New Item', store_id: store_id } }
+        # response '404', 'item or store not found' do
+        #   let(:store_id) { 'invalid' }
+        #   let(:id) { 'invalid' }
+        #   let(:item_params) { { name: 'New Item', store_id: store_id } }
   
-    #       run_test! do
-    #         expect(response).to have_http_status(404)
-    #       end
-    #     end
+        #   run_test! do
+        #     expect(response).to have_http_status(404)
+        #   end
+        # end
   
-    #     response '422', 'invalid request' do
-    #       let!(:store) { create(:store) }
-    #       let!(:item) { create(:item, store: store) }
-    #       let(:store_id) { store.id }
-    #       let(:id) { item.id }
-    #       let!(:item_params) { { name: '' } }
+        response '422', 'invalid request' do
+          let!(:store) { create(:store) }
+          let!(:item) { create(:item, name: 'Item1', store: store) }
+
+          let!(:ingredient) { create(:ingredient, name: 'Old Ingredient', item_id: item_id) }
+          let(:item_id) { item.id }
+          let(:id) { ingredient.id }
+          let(:ingredient_params) { { name: '' } }
   
-    #       run_test! do
-    #         expect(response.body).to include("is too short")
-    #       end
-    #     end
-    #   end
+          run_test! do
+            expect(response.body).to include("is too short")
+          end
+        end
+      end
   
-    #   delete 'Deletes an item' do
-    #     tags 'Items'
-    #     produces 'application/json'
-    #     parameter name: :id, in: :path, type: :integer, description: 'ID of the item to delete', required: true
+      delete 'Deletes an ingredient' do
+        tags 'Ingredients'
+        produces 'application/json'
+        parameter name: :id, in: :path, type: :integer, description: 'ID of the item to delete', required: true
         
-    #     response '204', 'item deleted' do
-    #       let!(:store) { create(:store) }
-    #       let!(:item) { create(:item, store: store) }
-    #       let(:store_id) { store.id }
-    #       let(:id) { item.id }
+        response '204', 'ingredient deleted' do
+          let(:store) { create(:store) }
+          let(:store_id) { store.id }
+          let(:item) { create(:item, name: 'new item', store: store)}
+          let(:item_id) {item.id}
+          let(:ingredient) { create(:ingredient, name: 'Lettuce', item_id: item_id) }
+          let(:id) { ingredient.id }
+  
+  
+          run_test!
+        end
+  
+        response '404', 'ingredient not found' do
+          let(:store) { create(:store) }
+          let(:store_id) { store.id }
+          let(:item) { create(:item, name: 'new item', store: store)}
+          let(:item_id) {item.id}
+          let(:ingredient) { { name: 'Lettuce', item_id: item_id } }
+          let(:id) { 'invalid' }
+  
+  
           
   
   
-    #       run_test!
-    #     end
-  
-    #     response '404', 'item not found' do
-    #       let!(:store) { create(:store) }
-    #       let!(:item) { create(:item, store: store) }
-    #       let(:id) {'invalid'}
-  
-  
-          
-  
-  
-    #       run_test! do
-    #         expect(response).to have_http_status(404)
-    #       end
-    #     end
-    #   end
-    # end
+          run_test! do
+            expect(response).to have_http_status(404)
+          end
+        end
+      end
+    end
     
 
  
