@@ -56,9 +56,11 @@ Also, After setting up, you can interact with the API using tools like `Postman`
 ## Endpoints
 
 ### Stores
-you can pass the query parameter `?&starts_with=mysearch` to search by name (Case sensitive)
+You can pass the query parameter `?&starts_with=mysearch` to search by name (Case sensitive)
+
 - **GET** `/stores` – List all stores
 - **GET** `/stores/:id` – Get a specific store
+- **GET** `/stores/:id/item_count` – Get a specific store with `item_count` in the response
 - **POST** `/stores` – Create a new store
 - **PUT** `/stores/:id` – Update a store
 - **DELETE** `/stores/:id` – Delete a store
