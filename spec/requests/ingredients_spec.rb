@@ -19,7 +19,7 @@ RSpec.describe "/ingredients", type: :request do
   # RSpec.describe 'Items Route', type: :request do
     path '/ingredients' do
       get 'Retrieves all ingredients for a store' do
-        tags 'ingredients'
+        tags 'Ingredients'
         produces 'application/json'
         parameter name: :page, in: :query, type: :integer, description: 'Page number for pagination', required: false
         

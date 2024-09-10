@@ -8,7 +8,7 @@ paths:
     get:
       summary: Retrieves all ingredients for a store
       tags:
-      - ingredients
+      - Ingredients
       parameters:
       - name: page
         in: query
